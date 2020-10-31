@@ -7,6 +7,7 @@ import {MatDialog, MatDialogConfig} from '@angular/material/dialog';
 import {CourseDialogComponent} from '../course-dialog/course-dialog.component';
 import {CoursesService} from '../services/courses.service';
 import {LoadingService} from '../loading/loading.service';
+import { MessagesService } from 'app/messages/messages.service';
 
 
 @Component({
@@ -21,8 +22,9 @@ export class HomeComponent implements OnInit {
   advancedCourses$: Observable<Course[]>;
 
   constructor(
-      private coursesService:CoursesService,
-      private loadingService: LoadingService) {
+      private coursesService: CoursesService,
+      private loadingService: LoadingService,
+      private messageService: MessagesService) {
 
   }
 
@@ -34,19 +36,25 @@ export class HomeComponent implements OnInit {
 
       const courses$ = this.coursesService.loadAllCourses()
           .pipe(
-              map(courses => courses.sort(sortCoursesBySeqNo))
+              map(courses => courses.sort(sortCoursesBySeqNo)),
+              catchError(err => {
+                  const message = 'Could not load course';
+                  this.messageService.showErrors(message);
+                  console.log(message, err);
+                  return throwError(err);
+              })
           );
 
       const loadCourses$ = this.loadingService.showLoaderUntilCompleted(courses$);
 
       this.beginnerCourses$ = loadCourses$
           .pipe(
-              map(courses => courses.filter(course => course.category == "BEGINNER"))
+              map(courses => courses.filter(course => course.category === 'BEGINNER'))
           );
 
       this.advancedCourses$ = loadCourses$
           .pipe(
-              map(courses => courses.filter(course => course.category == "ADVANCED"))
+              map(courses => courses.filter(course => course.category === 'ADVANCED'))
           );
   }
 

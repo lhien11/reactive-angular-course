@@ -12,12 +12,15 @@ export function getAllCourses(req: Request, res: Response) {
     res.status(500).json({message: 'random error occurred.'});
     return;
  */
+console.log("ERROR loading courses!");
+res.status(500).json({message: 'random error occurred.'});
+return;
 
-        setTimeout(() => {
+        // setTimeout(() => {
 
-             res.status(200).json({payload:Object.values(COURSES)});
+        //      res.status(200).json({payload:Object.values(COURSES)});
 
-        }, 1500);
+        // }, 1500);
 }
 
 
