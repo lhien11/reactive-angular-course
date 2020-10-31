@@ -20,7 +20,7 @@ export class CourseDialogComponent implements AfterViewInit {
 
     form: FormGroup;
 
-    course:Course;
+    course: Course;
 
     constructor(
         private fb: FormBuilder,
@@ -35,8 +35,9 @@ export class CourseDialogComponent implements AfterViewInit {
             description: [course.description, Validators.required],
             category: [course.category, Validators.required],
             releasedAt: [moment(), Validators.required],
-            longDescription: [course.longDescription,Validators.required]
+            longDescription: [course.longDescription, Validators.required]
         });
+
 
     }
 
